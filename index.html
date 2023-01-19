@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Bootstrap CSS-->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+
+    <title>Document</title>
+    <script src="https://unpkg.com/feather-icons"></script>
+  </head>
+
+  <body>
+    <header>
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#"
+                  >Random Gif<i data-feather="shuffle"></i
+                ></a>
+              </li>
+            </ul>
+            <form class="d-flex" role="search">
+              <input
+                class="form-control me-2"
+                type="search"
+                placeholder="Search Gif"
+                aria-label="Search"
+              />
+              <button class="btn btn-outline-success" type="submit">
+                Search <i data-feather="search"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </nav>
+      <div class="container-fluid mt-5">
+        <div class="row">
+          <div class="col">
+            <div class="form-row form-group">
+              <label for="search">Buscar GIF</label>
+              <input
+                type="text"
+                id="search"
+                class="form-control"
+                placeholder="Escribe lo que quieras buscar"
+              />
+            </div>
+            <div class="form-row form-group">
+              <button class="btn btn-primary" id="btn-random">Random</button>
+            </div>
+          </div>
+          <div class="col"></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container-fluid" id="gif-show">
+      <!-- Here the gifs will show up -->
+    </div>
+
+    <script>
+      feather.replace();
+    </script>
+    <script>
+      const API_KEY = "vcF4kxEHAkWEnrWAPENuEGmq5xENkfdb";
+      const gifs = document.getElementById("gif-show");
+      const inputSearch = document.getElementById("search");
+      const btnRandom = document.getElementById("btn-random");
+
+      // Function to get the gifs
+      inputSearch.onkeyup = async (event) => {
+        event.preventDefault(); // Prevent the default action of the event
+        if (event.keyCode !== 13) return; // If the key pressed is not enter, return
+
+        console.log(event);
+
+        const value = event.target.value; // Get the value of the input
+        console.log(value);
+
+        const url = `http://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=${inputSearch.value}`; // Create the url for the request
+
+        const response = await fetch(url); // Make the request
+        console.log(response);
+        const data = await response.json(); // Get the response in json format
+        console.log(data);
+
+        let content = "";
+        data.data.map((gif, index) => {
+          content += `<img src="${gif.images.original.url}" alt="${gif.title}" class="img-fluid" />`;
+          gifs.innerHTML = content;
+        });
+      };
+
+      // Function to get a random gif
+      btnRandom.onclick = async (event) => {
+        event.preventDefault(); // Prevent the default action of the event
+        console.log(event);
+
+        const url = `http://api.giphy.com/v1/gifs/random?api_key=${API_KEY}`; // Create the url for the request
+
+        const response = await fetch(url); // Make the request
+        console.log(response);
+        const data = await response.json(); // Get the response in json format
+        console.log(data);
+
+        let content = "";
+        content += `<img src="${data.data.images.original.url}" alt="${data.data.title}" class="img-fluid" />`;
+        gifs.innerHTML = content;
+      };
+
+      /*const { data: gifs } = data; // Get the data array from the response
+        console.log(gifs);
+        const container = document.querySelector("#gif-show"); // Get the container where the gifs will be shown
+
+
+
+        *container.innerHTML = ""; // Clear the container
+        gifs.forEach((gif) => {
+          // Create a div for each gif
+          const div = document.createElement("div");
+          div.classList.add("col-4");
+          div.classList.add("mb-4");
+
+          // Create a title for the gif
+          const title = document.createElement("h5");
+          title.innerText = gif.title;
+          div.appendChild(title);
+
+          // Create the img element
+          const img = document.createElement("img");
+          img.src = gif.images.original.url;
+          img.classList.add("img-fluid");
+
+          // Append the img to the div
+          div.appendChild(img);
+
+          // Append the div to the container
+          container.appendChild(div);
+        });
+      };*/
+    </script>
+  </body>
+</html>
