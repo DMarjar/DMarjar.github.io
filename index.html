@@ -129,37 +129,6 @@
         content += `<img src="${data.data.images.original.url}" alt="${data.data.title}" class="img-fluid" />`;
         gifs.innerHTML = content;
       };
-
-      /*const { data: gifs } = data; // Get the data array from the response
-        console.log(gifs);
-        const container = document.querySelector("#gif-show"); // Get the container where the gifs will be shown
-
-
-
-        *container.innerHTML = ""; // Clear the container
-        gifs.forEach((gif) => {
-          // Create a div for each gif
-          const div = document.createElement("div");
-          div.classList.add("col-4");
-          div.classList.add("mb-4");
-
-          // Create a title for the gif
-          const title = document.createElement("h5");
-          title.innerText = gif.title;
-          div.appendChild(title);
-
-          // Create the img element
-          const img = document.createElement("img");
-          img.src = gif.images.original.url;
-          img.classList.add("img-fluid");
-
-          // Append the img to the div
-          div.appendChild(img);
-
-          // Append the div to the container
-          container.appendChild(div);
-        });
-      };*/
     </script>
   </body>
 </html>
