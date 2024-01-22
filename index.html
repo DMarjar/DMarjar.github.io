@@ -10,27 +10,82 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="./style.css" />
-    <title>Coordenadas</title>
+    <title>Coordinates</title>
   </head>
   <body>
-    <div class="row m-2">
-      <div class="col">
-        <label for="xCoord">X</label>
-        <input type="number" name="xCoord" id="xCoord" />
-        <label for="yCoord">Y</label>
-        <input type="number" name="yCoord" id="yCoord" />
-        <label for="time">Tiempo</label>
-        <input type="number" name="time" id="time" />
-        <label for="points">Cantidad</label>
-        <input type="number" name="points" id="points" />
-        <button id="startButton" type="button" onclick="createTable()">Iniciar</button>
-        <button id="stopButton" type="button" onclick="stopProgram()">Detener</button>
-      </div>
-    </div>
-    <div class="row m-2">
-        <div class="col" id="table-container">
-
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col">
+          <h1>Coordinates 3000</h1>
         </div>
+      </div>
+      <div class="row m-2">
+        <div class="col-6 mb-3">
+          <label class="form-label" for="xCoord">X Coordinate</label>
+          <input
+            class="form-control mb-2"
+            type="number"
+            name="xCoord"
+            id="xCoord"
+            min="1"
+            placeholder="x value"
+          />
+          <label class="form-label" for="yCoord">Y Coordinate</label>
+          <input
+            class="form-control mb-2"
+            type="number"
+            name="yCoord"
+            id="yCoord"
+            min="1"
+            placeholder="y value"
+          />
+        </div>
+        <div class="col-6 mb-3">
+          <label class="form-label" for="time">Time</label>
+          <input
+            class="form-control mb-2"
+            type="number"
+            name="time"
+            id="time"
+            min="1"
+            placeholder="in seconds"
+          />
+          <label class="form-label" for="points">Points</label>
+          <input
+            class="form-control mb-2"
+            type="number"
+            name="points"
+            id="points"
+            min="1"
+            placeholder="generated points"
+          />
+        </div>
+        <div class="col-12 text-center">
+          <div class="btn-group">
+            <button
+              class="btn btn-primary"
+              id="startButton"
+              type="button"
+              onclick="start()"
+            >
+              Start
+            </button>
+            <button
+              class="btn btn-danger"
+              id="stopButton"
+              type="button"
+              onclick="stop()"
+            >
+              Stop
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row m-2">
+        <div class="col" id="table-container">
+          <table id="table"></table>
+        </div>
+      </div>
     </div>
     <script src="./coordinates.js"></script>
     <script

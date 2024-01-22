@@ -1,11 +1,11 @@
 td {
-    padding: 20px;
-    border: 1px solid #ccc;
-    text-align: left;
-    font-size: 14px;
-    font-family: Arial;
+  padding: 20px;
+  border: 1px solid #ccc;
+  text-align: left;
+  font-size: 14px;
+  font-family: Arial;
 }
 
 .marked {
-    background-color: #ff0000;
+  background-color: #ff0000;
 }
