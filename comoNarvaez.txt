@@ -1,0 +1,9 @@
+Leer datos y crear la tabla
+Cada cierto tiempo, generar N cantidad de coordenadas para marcarse sin que choquen con coordenadas ya generadas
+
+const ipX = document.getElementById('ipX')
+const ipY = document.getElementById('ipY')
+const ipT = document.getElementById('ipT')
+const ipC = document.getElementById('ipC')
+const btnStart = document.getElementById('btnStart')
+const btnStop = document.getElementById('btnStop')
