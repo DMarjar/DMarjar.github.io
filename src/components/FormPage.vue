@@ -22,7 +22,7 @@
     <!-- Form -->
     <b-row>
       <b-col>
-        <b-form @submit="onSubmit">
+        <b-form @submit.prevent="onSubmit">
           <!-- Personal data -->
           <b-row no-gutters>
             <b-col class="px-3 my-2">
@@ -38,6 +38,8 @@
                     required
                     trim
                     placeholder="Ingrese su nombre"
+                    maxlength="50"
+                    minlength="3"
                 ></b-form-input>
               </b-form-group>
             </b-col>
@@ -56,6 +58,8 @@
                     required
                     trim
                     placeholder="Ingrese su ocupación"
+                    maxlength="50"
+                    minlength="3"
                 ></b-form-input>
               </b-form-group>
             </b-col>
@@ -93,6 +97,8 @@
                     v-model="city"
                     trim
                     placeholder="Ingrese su ciudad"
+                    maxlength="50"
+                    minlength="2"
                 ></b-form-input>
               </b-form-group>
             </b-col>
@@ -122,7 +128,7 @@
                 <b-form-radio-group
                     id="radio-group-2"
                     v-model="exercise"
-                    :options="[{text: 'Sí', value: true}, {text: 'No', value: false}]"
+                    :options="[{text: 'Sí', value: 'Sí'}, {text: 'No', value: 'No'}]"
                     required
                 >
                 </b-form-radio-group>
@@ -207,6 +213,7 @@
                       trim
                       placeholder="Ingrese su estatura"
                       autocomplete="off"
+                      min="0"
                   ></b-form-input>
                 </b-input-group>
               </b-form-group>
@@ -228,6 +235,7 @@
                       trim
                       placeholder="Ingrese la circunferencia (muñeca)"
                       autocomplete="off"
+                      min="0"
                   ></b-form-input>
                 </b-input-group>
               </b-form-group>
@@ -249,6 +257,7 @@
                       trim
                       placeholder="Ingrese la circunferencia (cintura)"
                       autocomplete="off"
+                      min="0"
                   ></b-form-input>
                 </b-input-group>
               </b-form-group>
@@ -272,6 +281,7 @@
                       trim
                       placeholder="Ingrese su peso actual"
                       autocomplete="off"
+                      min="0"
                   ></b-form-input>
                 </b-input-group>
               </b-form-group>
@@ -293,6 +303,7 @@
                       v-model="desiredWeight"
                       placeholder="Ingrese su peso deseado"
                       autocomplete="off"
+                      min="0"
                   ></b-form-input>
                 </b-input-group>
               </b-form-group>
@@ -351,8 +362,10 @@
                     required
                     trim
                     no-resize
-                    rows="2"
+                    rows="3"
                     placeholder="Ejemplo: agua natural, café, té, refresco, jugo, etc."
+                    maxlength="100"
+                    minlength="2"
                 ></b-form-textarea>
               </b-form-group>
             </b-col>
@@ -371,6 +384,7 @@
                     no-resize
                     rows="3"
                     placeholder="Ejemplo: diabetes, hipertensión, colesterol alto, dolor de cabeza, etc."
+                    maxlength="100"
                 ></b-form-textarea>
               </b-form-group>
             </b-col>
@@ -515,32 +529,38 @@ export default Vue.extend({
   methods: {
     onSubmit() {
       this.generatePDF();
-      this.resetFormFiels();
+      this.showDownloadConfirmation()
     },
 
-    resetFormFiels() {
-      this.fullName = "";
-      this.occupation = "";
-      this.state = null;
-      this.sex = "";
-      this.exercise = "";
-      this.birthYear = null;
-      this.birthMonth = null;
-      this.birthDay = null;
-      this.height = null;
-      this.wristCircumference = null;
-      this.waistCircumference = null;
-      this.weight = null;
-      this.desiredWeight = null;
-      this.mealPreferences = ['Desayuno', 'Comida', 'Cena'];
-      this.snackPreferences = [];
-      this.beverages = "";
-      this.diseases = "";
+    getFirstName() {
+      return this.fullName.split(" ")[0];
+    },
+
+    formatNameForFile() {
+      // Change accent marks to normal characters
+      let formattedName = this.fullName.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      // replace spaces with _ and remove special characters
+      formattedName = formattedName.replace(/ /g, "_").replace(/[^a-zA-Z0-9_]/g, "");
+      return formattedName;
+    },
+
+    showDownloadConfirmation() {
+      this.$swal({
+        toast: true,
+        position: "top-end",
+        title: "¡Listo!",
+        text: `¡Gracias, ${this.getFirstName()}! Su formulario ha sido descargado con éxito, ahora solo envíelo a su dietista vía WhatsApp.`,
+        icon: "success",
+        iconColor: "#ff6600",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        background: "#fff9f3",
+      });
     },
 
     generatePDF() {
       const doc = new jspdf.jsPDF();
-      doc.addImage("../assets/logo.png", "PNG", 10, 5, 30, 30);
       doc.setFontSize(20);
       doc.setTextColor("#ff6600");
       doc.text("Formulario de registro", 105, 10, {align: "center"});
@@ -560,27 +580,27 @@ export default Vue.extend({
       // Anthropometric data
       doc.setFontSize(16);
       doc.setTextColor("#ff6600");
-      doc.text("Datos antropométricos", 10, 80);
+      doc.text("Datos antropométricos", 10, 90);
       doc.setFontSize(12);
       doc.setTextColor("#000000")
-      doc.text(`Estatura: ${this.height} cm`, 10, 90);
-      doc.text(`Circunferencia de la muñeca: ${this.wristCircumference} cm`, 10, 100);
-      doc.text(`Circunferencia de la cintura: ${this.waistCircumference} cm`, 10, 110);
-      doc.text(`Peso corporal: ${this.weight} kg`, 10, 120);
-      doc.text(`Peso deseado: ${this.desiredWeight} kg`, 10, 130);
+      doc.text(`Estatura: ${this.height} cm`, 10, 100);
+      doc.text(`Circunferencia de la muñeca: ${this.wristCircumference} cm`, 10, 110);
+      doc.text(`Circunferencia de la cintura: ${this.waistCircumference} cm`, 10, 120);
+      doc.text(`Peso corporal: ${this.weight} kg`, 10, 130);
+      doc.text(`Peso deseado: ${this.desiredWeight} kg`, 10, 140);
 
       // Meal preferences and other data
       doc.setFontSize(16);
       doc.setTextColor("#ff6600");
-      doc.text("Preferencias alimenticias y otros datos", 10, 140);
+      doc.text("Preferencias alimenticias y otros datos", 10, 150);
       doc.setFontSize(12);
       doc.setTextColor("#000000")
-      doc.text(`Momentos de comida (mayor a menor): ${this.mealPreferences.join(", ")}`, 10, 150);
-      doc.text(`Snacks: ${this.snackPreferences ? this.snackPreferences.join(", ") : "N/A"}`, 10, 160);
-      doc.text(`Bebidas: ${this.beverages}`, 10, 170);
-      doc.text(`Enfermedades: ${this.diseases ? this.diseases : "N/A"}`, 10, 180);
+      doc.text(`Momentos de comida (mayor a menor): ${this.mealPreferences.join(", ")}`, 10, 160);
+      doc.text(`Snacks: ${this.snackPreferences ? this.snackPreferences.join(", ") : "N/A"}`, 10, 170);
+      doc.text(`Bebidas: ${this.beverages}`, 10, 180);
+      doc.text(`Enfermedades: ${this.diseases ? this.diseases : "N/A"}`, 10, 190);
 
-      doc.save(`DIETEC_formulario_${this.fullName}.pdf`);
+      doc.save(`DIETEC_Formulario_${this.formatNameForFile()}.pdf`);
     },
 
     // Generate years from current year to 120 years ago
