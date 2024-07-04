@@ -25,7 +25,7 @@
         <b-form @submit="onSubmit">
           <!-- Personal data -->
           <b-row no-gutters>
-            <b-col class="px-3">
+            <b-col class="px-3 my-2">
               <b-form-group
                   id="input-group-1"
                   label="Nombre completo:"
@@ -43,7 +43,7 @@
             </b-col>
           </b-row>
           <b-row no-gutters>
-            <b-col class="px-3">
+            <b-col class="px-3 my-2">
               <b-form-group
                   id="input-group-2"
                   label="Ocupación:"
@@ -61,7 +61,7 @@
             </b-col>
           </b-row>
           <b-row no-gutters>
-            <b-col cols="12" md="6" class="px-3">
+            <b-col cols="12" md="6" class="px-3 my-2">
               <b-form-group
                   id="input-group-3"
                   label="Estado:"
@@ -80,7 +80,7 @@
                 </b-form-select>
               </b-form-group>
             </b-col>
-            <b-col cols="12" md="6" class="px-3">
+            <b-col cols="12" md="6" class="px-3 my-2">
               <b-form-group
                   id="input-group-4"
                   label="Ciudad:"
@@ -90,6 +90,7 @@
                     id="city"
                     type="text"
                     required
+                    v-model="city"
                     trim
                     placeholder="Ingrese su ciudad"
                 ></b-form-input>
@@ -97,7 +98,7 @@
             </b-col>
           </b-row>
           <b-row no-gutters>
-            <b-col cols="12" md="6" class="px-3">
+            <b-col cols="12" md="6" class="px-3 my-2">
               <b-form-group
                   id="input-group-5"
                   label="Sexo de nacimiento:"
@@ -112,19 +113,19 @@
                 </b-form-radio-group>
               </b-form-group>
             </b-col>
-            <b-col cols="12" md="6" class="px-3">
+            <b-col cols="12" md="6" class="px-3 my-2">
               <b-form-group
                   id="input-group-6"
                   label="¿Practica ejercicio?"
                   label-for="exercise"
               >
-                <b-form-checkbox
-                    id="exercise"
+                <b-form-radio-group
+                    id="radio-group-2"
                     v-model="exercise"
+                    :options="[{text: 'Sí', value: true}, {text: 'No', value: false}]"
                     required
                 >
-                  Sí
-                </b-form-checkbox>
+                </b-form-radio-group>
               </b-form-group>
             </b-col>
           </b-row>
@@ -188,7 +189,7 @@
 
           <!-- Anthropometric data -->
           <b-row no-gutters>
-            <b-col cols="12" md="4" class="px-3">
+            <b-col cols="12" md="4" class="px-3 my-2">
               <b-form-group
                   id="input-group-8"
                   label="Estatura actual en centímetros (sin zapatos, con los talones pegados a la pared y viendo al frente):"
@@ -210,7 +211,7 @@
                 </b-input-group>
               </b-form-group>
             </b-col>
-            <b-col cols="12" md="4" class="px-3">
+            <b-col cols="12" md="4" class="px-3 my-2">
               <b-form-group
                   id="input-group-9"
                   label="Circunferencia de la muñeca derecha en centímetros (utiliza una cinta métrica sin apretar la muñeca):"
@@ -231,7 +232,7 @@
                 </b-input-group>
               </b-form-group>
             </b-col>
-            <b-col cols="12" md="4" class="px-3">
+            <b-col cols="12" md="4" class="px-3 my-2">
               <b-form-group
                   id="input-group-10"
                   label="Circunferencia de la cintura en centímetros (utiliza una cinta métrica a nivel del ombligo sin oprimir la piel):"
@@ -254,7 +255,7 @@
             </b-col>
           </b-row>
           <b-row no-gutters>
-            <b-col cols="12" md="6" class="px-3">
+            <b-col cols="12" md="6" class="px-3 my-2">
               <b-form-group
                   id="input-group-11"
                   label="Peso corporal actual en kilogramos (pésate en ayunas y envía la fotografía de tu peso sobre la báscula digital):"
@@ -275,7 +276,7 @@
                 </b-input-group>
               </b-form-group>
             </b-col>
-            <b-col cols="12" md="6" class="px-3">
+            <b-col cols="12" md="6" class="px-3 my-2">
               <b-form-group
                   id="input-group-12"
                   label="Peso corporal deseado en kilogramos (díganos cuál es el peso con el que se sentiría feliz):"
@@ -289,6 +290,7 @@
                       type="number"
                       required
                       trim
+                      v-model="desiredWeight"
                       placeholder="Ingrese su peso deseado"
                       autocomplete="off"
                   ></b-form-input>
@@ -301,10 +303,10 @@
 
           <!-- Meal preferences and other data -->
           <b-row no-gutters>
-            <b-col class="px-3">
+            <b-col class="px-3 my-2">
               <b-form-group
                   id="input-group-13"
-                  label="Elija en qué momento del día prefieres comer más, siendo 1 el principal momento de alimentación:"
+                  label="Arrastre y ordene en qué momento del día prefiere comer más, siendo 1 el principal momento de alimentación:"
                   label-for="mealPreferences"
               >
                 <draggable v-model="mealPreferences" :options="{ animation: 300 }">
@@ -323,7 +325,7 @@
             </b-col>
           </b-row>
           <b-row no-gutters>
-            <b-col cols="12" md="6" class="px-3">
+            <b-col cols="12" md="6" class="px-3 my-2">
               <b-form-group
                   id="input-group-14"
                   label="Indique en qué momento del día desea comer un snack para satisfacer su antojo o apetito entre comidas:"
@@ -333,12 +335,11 @@
                     id="snackPreferences"
                     v-model="snackPreferences"
                     :options="snackTimeOptions"
-                    required
                 >
                 </b-form-checkbox-group>
               </b-form-group>
             </b-col>
-            <b-col cols="12" md="6" class="px-3">
+            <b-col cols="12" md="6" class="px-3 my-2">
               <b-form-group
                   id="input-group-15"
                   label="Cuéntenos cuáles son sus bebidas acostumbradas o preferidas durante el día:"
@@ -357,7 +358,7 @@
             </b-col>
           </b-row>
           <b-row no-gutters>
-            <b-col class="px-3">
+            <b-col class="px-3 my-2">
               <b-form-group
                   id="input-group-16"
                   label="Finalmente, relate si presenta alguna enfermedad, padecimiento, o dolor físico y cuál es:"
@@ -366,7 +367,6 @@
                 <b-form-textarea
                     id="diseases"
                     v-model="diseases"
-                    required
                     trim
                     no-resize
                     rows="3"
@@ -380,10 +380,14 @@
 
           <!-- Submit button -->
           <b-row no-gutters>
-            <b-col cols="12" class="px-3">
+            <b-col cols="12" class="px-3 my-2">
               <p class="text-justify">
-                  <b-icon icon="exclamation-triangle" class="text-warning"></b-icon>
-                <b> Aviso:</b> Al terminar de rellenar el formulario, presione el botón <i>"Descargar formulario"</i> para obtener un archivo PDF con la información proporcionada. Posteriormente, envíe el archivo a su dietista vía WhatsApp.
+                <b-icon icon="exclamation-triangle" class="text-warning"></b-icon>
+                <small>
+                  <b> Aviso:</b> Al terminar de rellenar el formulario, presione el botón <i>"Descargar formulario"</i>
+                  para obtener un archivo PDF con la información proporcionada. Posteriormente, envíe el archivo a su
+                  dietista vía WhatsApp.
+                </small>
               </p>
             </b-col>
             <b-col cols="12" class="px-3">
@@ -395,10 +399,13 @@
 
           <!-- Disclaimer -->
           <b-row no-gutters>
-            <b-col class="px-3">
+            <b-col class="px-3 my-2">
               <p class="text-justify">
                 <small>
-                  Gracias por tu preferencia. Te invitamos a conocer nuestros Términos y Condiciones, así como nuestra lista de precios en nuestra página web: <a href="https://www.dietec.mx" target="_blank">www.dietec.mx</a>. Si tienes alguna duda o aclaración únicamente para servicio al cliente, comunícate en WhatsApp al número: <b>55 4853 2458</b>.
+                  Gracias por tu preferencia. Te invitamos a conocer nuestros Términos y Condiciones, así como nuestra
+                  lista de precios en nuestra página web: <a href="https://www.dietec.mx"
+                                                             target="_blank">www.dietec.mx</a>. Si tienes alguna duda o
+                  aclaración únicamente para servicio al cliente, comunícate en WhatsApp al número: <b>55 4853 2458</b>.
                 </small>
               </p>
             </b-col>
@@ -413,6 +420,7 @@
 <script lang="ts">
 import Vue from "vue";
 import draggable from "vuedraggable";
+import * as jspdf from "jspdf";
 
 export default Vue.extend({
   name: "FormPage",
@@ -425,8 +433,9 @@ export default Vue.extend({
       fullName: "" as string,
       occupation: "" as string,
       state: null as string | null,
+      city: "" as string,
       sex: "" as string,
-      exercise: false as boolean,
+      exercise: "" as string,
       birthYear: null as string | null,
       birthMonth: null as string | null,
       birthDay: null as string | null,
@@ -505,7 +514,73 @@ export default Vue.extend({
 
   methods: {
     onSubmit() {
-      console.log("Form submitted");
+      this.generatePDF();
+      this.resetFormFiels();
+    },
+
+    resetFormFiels() {
+      this.fullName = "";
+      this.occupation = "";
+      this.state = null;
+      this.sex = "";
+      this.exercise = "";
+      this.birthYear = null;
+      this.birthMonth = null;
+      this.birthDay = null;
+      this.height = null;
+      this.wristCircumference = null;
+      this.waistCircumference = null;
+      this.weight = null;
+      this.desiredWeight = null;
+      this.mealPreferences = ['Desayuno', 'Comida', 'Cena'];
+      this.snackPreferences = [];
+      this.beverages = "";
+      this.diseases = "";
+    },
+
+    generatePDF() {
+      const doc = new jspdf.jsPDF();
+      doc.addImage("../assets/logo.png", "PNG", 10, 5, 30, 30);
+      doc.setFontSize(20);
+      doc.setTextColor("#ff6600");
+      doc.text("Formulario de registro", 105, 10, {align: "center"});
+
+      // Personal data
+      doc.setFontSize(16);
+      doc.text("Datos personales", 10, 20);
+      doc.setFontSize(12);
+      doc.setTextColor("#000000")
+      doc.text(`Nombre completo: ${this.fullName}`, 10, 30);
+      doc.text(`Ocupación: ${this.occupation}`, 10, 40);
+      doc.text(`Estado: ${this.state}`, 10, 50);
+      doc.text(`Ciudad: ${this.city}`, 10, 60);
+      doc.text(`Sexo de nacimiento: ${this.sex}`, 10, 70);
+      doc.text(`¿Practica ejercicio?: ${this.exercise}`, 10, 80);
+
+      // Anthropometric data
+      doc.setFontSize(16);
+      doc.setTextColor("#ff6600");
+      doc.text("Datos antropométricos", 10, 80);
+      doc.setFontSize(12);
+      doc.setTextColor("#000000")
+      doc.text(`Estatura: ${this.height} cm`, 10, 90);
+      doc.text(`Circunferencia de la muñeca: ${this.wristCircumference} cm`, 10, 100);
+      doc.text(`Circunferencia de la cintura: ${this.waistCircumference} cm`, 10, 110);
+      doc.text(`Peso corporal: ${this.weight} kg`, 10, 120);
+      doc.text(`Peso deseado: ${this.desiredWeight} kg`, 10, 130);
+
+      // Meal preferences and other data
+      doc.setFontSize(16);
+      doc.setTextColor("#ff6600");
+      doc.text("Preferencias alimenticias y otros datos", 10, 140);
+      doc.setFontSize(12);
+      doc.setTextColor("#000000")
+      doc.text(`Momentos de comida (mayor a menor): ${this.mealPreferences.join(", ")}`, 10, 150);
+      doc.text(`Snacks: ${this.snackPreferences ? this.snackPreferences.join(", ") : "N/A"}`, 10, 160);
+      doc.text(`Bebidas: ${this.beverages}`, 10, 170);
+      doc.text(`Enfermedades: ${this.diseases ? this.diseases : "N/A"}`, 10, 180);
+
+      doc.save(`DIETEC_formulario_${this.fullName}.pdf`);
     },
 
     // Generate years from current year to 120 years ago
@@ -525,7 +600,6 @@ export default Vue.extend({
       for (let i = 1; i <= daysInMonth; i++) {
         days.push({value: i.toString(), text: i.toString()});
       }
-      console.log(days);
       this.dayOptions = days;
     },
   },
