@@ -150,7 +150,7 @@
                         v-model="birthYear"
                         :options="yearOptions"
                         required
-                        @change="daysInMonth(parseInt(birthMonth), parseInt(birthYear))"
+                        @change="daysInMonth(birthMonth, birthYear)"
                     >
                       <template #first>
                         <b-form-select-option :value="null" disabled>Año
@@ -164,7 +164,7 @@
                         v-model="birthMonth"
                         :options="monthOptions"
                         required
-                        @change="daysInMonth(parseInt(birthMonth), parseInt(birthYear))"
+                        @change="daysInMonth(birthMonth, birthYear)"
                     >
                       <template #first>
                         <b-form-select-option :value="null" disabled>Mes
@@ -209,7 +209,7 @@
                       id="height"
                       type="number"
                       required
-                      v-model="height"
+                      v-model.number="height"
                       trim
                       placeholder="Ingrese su estatura"
                       autocomplete="off"
@@ -221,7 +221,7 @@
             <b-col cols="12" md="4" class="px-3 my-2">
               <b-form-group
                   id="input-group-9"
-                  label="Circunferencia de la muñeca derecha en centímetros (utiliza una cinta métrica sin apretar la muñeca):"
+                  label="Circunferencia de la muñeca derecha en centímetros (utilice una cinta métrica sin apretar la muñeca):"
                   label-for="wristCircumference"
               >
                 <b-input-group
@@ -231,11 +231,12 @@
                       id="wristCircumference"
                       type="number"
                       required
-                      v-model="wristCircumference"
+                      v-model.number="wristCircumference"
                       trim
                       placeholder="Ingrese la circunferencia (muñeca)"
                       autocomplete="off"
                       min="0"
+                      step="0.1"
                   ></b-form-input>
                 </b-input-group>
               </b-form-group>
@@ -243,7 +244,7 @@
             <b-col cols="12" md="4" class="px-3 my-2">
               <b-form-group
                   id="input-group-10"
-                  label="Circunferencia de la cintura en centímetros (utiliza una cinta métrica a nivel del ombligo sin oprimir la piel):"
+                  label="Circunferencia de la cintura en centímetros (utilice una cinta métrica a nivel del ombligo sin oprimir la piel):"
                   label-for="waistCircumference"
               >
                 <b-input-group
@@ -253,11 +254,12 @@
                       id="waistCircumference"
                       type="number"
                       required
-                      v-model="waistCircumference"
+                      v-model.number="waistCircumference"
                       trim
                       placeholder="Ingrese la circunferencia (cintura)"
                       autocomplete="off"
                       min="0"
+                      step="0.1"
                   ></b-form-input>
                 </b-input-group>
               </b-form-group>
@@ -267,7 +269,7 @@
             <b-col cols="12" md="6" class="px-3 my-2">
               <b-form-group
                   id="input-group-11"
-                  label="Peso corporal actual en kilogramos (pésate en ayunas y envía la fotografía de tu peso sobre la báscula digital):"
+                  label="Peso corporal actual en kilogramos (pésese en ayunas, sin zapatos, y envíe la fotografía de su peso sobre la báscula digital):"
                   label-for="weight"
               >
                 <b-input-group
@@ -277,11 +279,12 @@
                       id="weight"
                       type="number"
                       required
-                      v-model="weight"
+                      v-model.number="weight"
                       trim
                       placeholder="Ingrese su peso actual"
                       autocomplete="off"
                       min="0"
+                      step="0.1"
                   ></b-form-input>
                 </b-input-group>
               </b-form-group>
@@ -300,10 +303,11 @@
                       type="number"
                       required
                       trim
-                      v-model="desiredWeight"
+                      v-model.number="desiredWeight"
                       placeholder="Ingrese su peso deseado"
                       autocomplete="off"
                       min="0"
+                      step="0.1"
                   ></b-form-input>
                 </b-input-group>
               </b-form-group>
@@ -363,7 +367,7 @@
                     trim
                     no-resize
                     rows="3"
-                    placeholder="Ejemplo: agua natural, café, té, refresco, jugo, etc."
+                    placeholder="Ejemplo: agua de frutas, leche, refresco, jugo, cerveza, etc."
                     maxlength="100"
                     minlength="2"
                 ></b-form-textarea>
@@ -384,6 +388,25 @@
                     no-resize
                     rows="3"
                     placeholder="Ejemplo: diabetes, hipertensión, colesterol alto, dolor de cabeza, etc."
+                    maxlength="100"
+                ></b-form-textarea>
+              </b-form-group>
+            </b-col>
+          </b-row>
+          <b-row no-gutters>
+            <b-col class="px-3 my-2">
+              <b-form-group
+                  id="input-group-17"
+                  label="¿Toma algún medicamento o suplemento alimenticio? Si es así, mencione cuál y para qué:"
+                  label-for="medicines"
+              >
+                <b-form-textarea
+                    id="medicines"
+                    v-model="medicines"
+                    trim
+                    no-resize
+                    rows="3"
+                    placeholder="Ejemplo: metformina, complejo B, vitamina C, etc."
                     maxlength="100"
                 ></b-form-textarea>
               </b-form-group>
@@ -462,6 +485,7 @@ export default Vue.extend({
       snackPreferences: [] as string[],
       beverages: "" as string,
       diseases: "" as string,
+      medicines: "" as string,
 
       // Form options
       yearOptions: [] as { value: string; text: string }[],
@@ -536,6 +560,15 @@ export default Vue.extend({
       return this.fullName.split(" ")[0];
     },
 
+    getFullBirthDate() {
+      const monthName = this.changeMonthNumberToName(Number(this.birthMonth));
+      return `${this.birthDay} de ${monthName} de ${this.birthYear}`;
+    },
+
+    changeMonthNumberToName(monthNumber: number) {
+      return this.monthOptions[monthNumber].text;
+    },
+
     formatNameForFile() {
       // Change accent marks to normal characters
       let formattedName = this.fullName.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -576,29 +609,31 @@ export default Vue.extend({
       doc.text(`Ciudad: ${this.city}`, 10, 60);
       doc.text(`Sexo de nacimiento: ${this.sex}`, 10, 70);
       doc.text(`¿Practica ejercicio?: ${this.exercise}`, 10, 80);
+      doc.text(`Fecha de nacimiento: ${this.getFullBirthDate()}`, 10, 90);
 
       // Anthropometric data
       doc.setFontSize(16);
       doc.setTextColor("#ff6600");
-      doc.text("Datos antropométricos", 10, 90);
+      doc.text("Datos antropométricos", 10, 100);
       doc.setFontSize(12);
       doc.setTextColor("#000000")
-      doc.text(`Estatura: ${this.height} cm`, 10, 100);
-      doc.text(`Circunferencia de la muñeca: ${this.wristCircumference} cm`, 10, 110);
-      doc.text(`Circunferencia de la cintura: ${this.waistCircumference} cm`, 10, 120);
-      doc.text(`Peso corporal: ${this.weight} kg`, 10, 130);
-      doc.text(`Peso deseado: ${this.desiredWeight} kg`, 10, 140);
+      doc.text(`Estatura: ${this.height} cm`, 10, 110);
+      doc.text(`Circunferencia de la muñeca: ${this.wristCircumference} cm`, 10, 120);
+      doc.text(`Circunferencia de la cintura: ${this.waistCircumference} cm`, 10, 130);
+      doc.text(`Peso corporal: ${this.weight} kg`, 10, 140);
+      doc.text(`Peso deseado: ${this.desiredWeight} kg`, 10, 150);
 
       // Meal preferences and other data
       doc.setFontSize(16);
       doc.setTextColor("#ff6600");
-      doc.text("Preferencias alimenticias y otros datos", 10, 150);
+      doc.text("Preferencias alimenticias y otros datos", 10, 160);
       doc.setFontSize(12);
       doc.setTextColor("#000000")
-      doc.text(`Momentos de comida (mayor a menor): ${this.mealPreferences.join(", ")}`, 10, 160);
-      doc.text(`Snacks: ${this.snackPreferences ? this.snackPreferences.join(", ") : "N/A"}`, 10, 170);
-      doc.text(`Bebidas: ${this.beverages}`, 10, 180);
-      doc.text(`Enfermedades: ${this.diseases ? this.diseases : "N/A"}`, 10, 190);
+      doc.text(`Momentos de comida (mayor a menor): ${this.mealPreferences.join(", ")}`, 10, 170);
+      doc.text(`Snacks: ${this.snackPreferences ? this.snackPreferences.join(", ") : "N/A"}`, 10, 180);
+      doc.text(`Bebidas: ${this.beverages}`, 10, 190);
+      doc.text(`Enfermedades: ${this.diseases ? this.diseases : "N/A"}`, 10, 200);
+      doc.text(`Medicamentos: ${this.medicines ? this.medicines : "N/A"}`, 10, 210);
 
       doc.save(`DIETEC_Formulario_${this.formatNameForFile()}.pdf`);
     },
@@ -614,9 +649,9 @@ export default Vue.extend({
     },
 
     // Generate days based on selected month and year
-    daysInMonth(month: number, year: number) {
+    daysInMonth(month: string | null, year: string | null) {
       const days = [];
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const daysInMonth = new Date(Number(year), Number(month) + 1, 0).getDate();
       for (let i = 1; i <= daysInMonth; i++) {
         days.push({value: i.toString(), text: i.toString()});
       }
