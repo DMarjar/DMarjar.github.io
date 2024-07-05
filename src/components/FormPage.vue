@@ -551,24 +551,29 @@ export default Vue.extend({
   },
 
   methods: {
+    // Submit form
     onSubmit() {
       this.generatePDF();
       this.showDownloadConfirmation()
     },
 
+    // Get first name from full name
     getFirstName() {
       return this.fullName.split(" ")[0];
     },
 
+    // Get full birth date in format "DD de Month de YYYY"
     getFullBirthDate() {
       const monthName = this.changeMonthNumberToName(Number(this.birthMonth));
       return `${this.birthDay} de ${monthName} de ${this.birthYear}`;
     },
 
+    // Change month number to month name
     changeMonthNumberToName(monthNumber: number) {
       return this.monthOptions[monthNumber].text;
     },
 
+    // Formats the name to be used as the file name with no special characters and spaces replaced by _
     formatNameForFile() {
       // Change accent marks to normal characters
       let formattedName = this.fullName.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -577,6 +582,7 @@ export default Vue.extend({
       return formattedName;
     },
 
+    // Show download confirmation message
     showDownloadConfirmation() {
       this.$swal({
         toast: true,
@@ -592,6 +598,7 @@ export default Vue.extend({
       });
     },
 
+    // Generate PDF with form data
     generatePDF() {
       const doc = new jspdf.jsPDF();
       doc.setFontSize(20);
