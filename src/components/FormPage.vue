@@ -190,6 +190,32 @@
               </b-form-group>
             </b-col>
           </b-row>
+          <b-row no-gutters>
+            <b-col cols="12" md="6" class="px-3 my-2">
+              <b-form-group
+                  id="input-group-8"
+                  label="Ingrese su número de WhatsApp:"
+                  label-for="phoneNumber"
+              >
+                <b-input-group>
+                  <b-input-group-prepend is-text>
+                    <b-icon icon="whatsapp" class="text-primary"></b-icon>
+                  </b-input-group-prepend>
+                  <b-form-input
+                      id="phoneNumber"
+                      type="tel"
+                      required
+                      v-model="phoneNumber"
+                      trim
+                      placeholder="Ingrese su número de teléfono"
+                      autocomplete="off"
+                      maxlength="10"
+                      :formatter="formatPhoneNumber"
+                  ></b-form-input>
+                </b-input-group>
+              </b-form-group>
+            </b-col>
+          </b-row>
 
           <hr class="bg-primary"/>
 
@@ -211,7 +237,7 @@
                       required
                       v-model.number="height"
                       trim
-                      placeholder="Ingrese su estatura"
+                      placeholder="Ejemplo: 178"
                       autocomplete="off"
                       min="0"
                   ></b-form-input>
@@ -221,7 +247,7 @@
             <b-col cols="12" md="4" class="px-3 my-2">
               <b-form-group
                   id="input-group-9"
-                  label="Circunferencia de la muñeca derecha en centímetros (utilice una cinta métrica sin apretar la muñeca):"
+                  label="Circunferencia exacta de la muñeca derecha con centímetros y milímetros (utilice una cinta métrica sin apretar la muñeca):"
                   label-for="wristCircumference"
               >
                 <b-input-group
@@ -233,7 +259,7 @@
                       required
                       v-model.number="wristCircumference"
                       trim
-                      placeholder="Ingrese la circunferencia (muñeca)"
+                      placeholder="Ejemplo: 17.2"
                       autocomplete="off"
                       min="0"
                       step="0.1"
@@ -244,7 +270,7 @@
             <b-col cols="12" md="4" class="px-3 my-2">
               <b-form-group
                   id="input-group-10"
-                  label="Circunferencia de la cintura en centímetros (utilice una cinta métrica a nivel del ombligo sin oprimir la piel):"
+                  label="Circunferencia exacta de la cintura con centímetros y milímetros (utilice una cinta métrica a nivel del ombligo sin oprimir la piel):"
                   label-for="waistCircumference"
               >
                 <b-input-group
@@ -256,7 +282,7 @@
                       required
                       v-model.number="waistCircumference"
                       trim
-                      placeholder="Ingrese la circunferencia (cintura)"
+                      placeholder="Ejemplo: 102.6"
                       autocomplete="off"
                       min="0"
                       step="0.1"
@@ -269,7 +295,7 @@
             <b-col cols="12" md="6" class="px-3 my-2">
               <b-form-group
                   id="input-group-11"
-                  label="Peso corporal actual en kilogramos (pésese en ayunas, sin zapatos, y envíe la fotografía de su peso sobre la báscula digital):"
+                  label="Peso corporal exacto actual con kilogramos y gramos (pésese en ayunas, sin zapatos, y envíe la fotografía de su peso sobre la báscula digital):"
                   label-for="weight"
               >
                 <b-input-group
@@ -281,7 +307,7 @@
                       required
                       v-model.number="weight"
                       trim
-                      placeholder="Ingrese su peso actual"
+                      placeholder="Ejemplo: 95.7"
                       autocomplete="off"
                       min="0"
                       step="0.1"
@@ -304,7 +330,7 @@
                       required
                       trim
                       v-model.number="desiredWeight"
-                      placeholder="Ingrese su peso deseado"
+                      placeholder="Ejemplo: 75.5"
                       autocomplete="off"
                       min="0"
                       step="0.1"
@@ -476,6 +502,7 @@ export default Vue.extend({
       birthYear: null as string | null,
       birthMonth: null as string | null,
       birthDay: null as string | null,
+      phoneNumber: "" as string,
       height: null as Number | null,
       wristCircumference: null as Number | null,
       waistCircumference: null as Number | null,
@@ -562,7 +589,7 @@ export default Vue.extend({
       return this.fullName.split(" ")[0];
     },
 
-    // Get full birth date in format "DD de Month de YYYY"
+    // Get full birthdate in format "DD de Month de YYYY"
     getFullBirthDate() {
       const monthName = this.changeMonthNumberToName(Number(this.birthMonth));
       return `${this.birthDay} de ${monthName} de ${this.birthYear}`;
@@ -580,6 +607,15 @@ export default Vue.extend({
       // replace spaces with _ and remove special characters
       formattedName = formattedName.replace(/ /g, "_").replace(/[^a-zA-Z0-9_]/g, "");
       return formattedName;
+    },
+
+    // Formats phone number to only contain digits
+    formatPhoneNumber(value: string): string {
+      let digits = value.replace(/\D/g, '');
+      if (digits.length > 10) {
+        digits = digits.substring(0, 10);
+      }
+      return digits;
     },
 
     // Show download confirmation message
@@ -617,37 +653,38 @@ export default Vue.extend({
       doc.text(`Sexo de nacimiento: ${this.sex}`, 10, 70);
       doc.text(`¿Practica ejercicio?: ${this.exercise}`, 10, 80);
       doc.text(`Fecha de nacimiento: ${this.getFullBirthDate()}`, 10, 90);
+      doc.text(`Número de teléfono: ${this.phoneNumber}`, 10, 100);
 
       // Anthropometric data
       doc.setFontSize(16);
       doc.setTextColor("#ff6600");
-      doc.text("Datos antropométricos", 10, 100);
+      doc.text("Datos antropométricos", 10, 110);
       doc.setFontSize(12);
       doc.setTextColor("#000000")
-      doc.text(`Estatura: ${this.height} cm`, 10, 110);
-      doc.text(`Circunferencia de la muñeca: ${this.wristCircumference} cm`, 10, 120);
-      doc.text(`Circunferencia de la cintura: ${this.waistCircumference} cm`, 10, 130);
-      doc.text(`Peso corporal: ${this.weight} kg`, 10, 140);
-      doc.text(`Peso deseado: ${this.desiredWeight} kg`, 10, 150);
+      doc.text(`Estatura: ${this.height} cm`, 10, 120);
+      doc.text(`Circunferencia de la muñeca: ${this.wristCircumference} cm`, 10, 130);
+      doc.text(`Circunferencia de la cintura: ${this.waistCircumference} cm`, 10, 140);
+      doc.text(`Peso corporal: ${this.weight} kg`, 10, 150);
+      doc.text(`Peso deseado: ${this.desiredWeight} kg`, 10, 160);
 
       // Meal preferences and other data
       doc.setFontSize(16);
       doc.setTextColor("#ff6600");
-      doc.text("Preferencias alimenticias y otros datos", 10, 160);
+      doc.text("Preferencias alimenticias y otros datos", 10, 170);
       doc.setFontSize(12);
       doc.setTextColor("#000000")
-      doc.text(`Momentos de comida (mayor a menor): ${this.mealPreferences.join(", ")}`, 10, 170);
-      doc.text(`Snacks: ${this.snackPreferences ? this.snackPreferences.join(", ") : "N/A"}`, 10, 180);
-      doc.text(`Bebidas: ${this.beverages}`, 10, 190);
-      doc.text(`Enfermedades: ${this.diseases ? this.diseases : "N/A"}`, 10, 200);
-      doc.text(`Medicamentos: ${this.medicines ? this.medicines : "N/A"}`, 10, 210);
+      doc.text(`Momentos de comida (mayor a menor): ${this.mealPreferences.join(", ")}`, 10, 180);
+      doc.text(`Snacks: ${this.snackPreferences ? this.snackPreferences.join(", ") : "N/A"}`, 10, 190);
+      doc.text(`Bebidas: ${this.beverages}`, 10, 200);
+      doc.text(`Enfermedades: ${this.diseases ? this.diseases : "N/A"}`, 10, 210);
+      doc.text(`Medicamentos: ${this.medicines ? this.medicines : "N/A"}`, 10, 220);
 
       doc.save(`DIETEC_Formulario_${this.formatNameForFile()}.pdf`);
     },
 
     // Generate years from current year to 120 years ago
     generateYears() {
-      const currentYear = new Date().getFullYear();
+      const currentYear = new Date().getFullYear() - 15;
       const years = [];
       for (let i = currentYear; i >= currentYear - 120; i--) {
         years.push({value: i.toString(), text: i.toString()});
