@@ -24,439 +24,448 @@
       <b-col>
         <b-form @submit.prevent="onSubmit">
           <!-- Personal data -->
-          <b-row no-gutters>
-            <b-col class="px-3 my-2">
-              <b-form-group
-                  id="input-group-1"
-                  label="Nombre completo:"
-                  label-for="fullName"
-              >
-                <b-form-input
-                    id="fullName"
-                    v-model="fullName"
-                    type="text"
-                    required
-                    trim
-                    placeholder="Ingrese su nombre"
-                    maxlength="50"
-                    minlength="3"
-                ></b-form-input>
-              </b-form-group>
-            </b-col>
-          </b-row>
-          <b-row no-gutters>
-            <b-col class="px-3 my-2">
-              <b-form-group
-                  id="input-group-2"
-                  label="Ocupación:"
-                  label-for="occupation"
-              >
-                <b-form-input
-                    id="occupation"
-                    v-model="occupation"
-                    type="text"
-                    required
-                    trim
-                    placeholder="Ingrese su ocupación"
-                    maxlength="50"
-                    minlength="3"
-                ></b-form-input>
-              </b-form-group>
-            </b-col>
-          </b-row>
-          <b-row no-gutters>
-            <b-col cols="12" md="6" class="px-3 my-2">
-              <b-form-group
-                  id="input-group-3"
-                  label="Estado:"
-                  label-for="state"
-              >
-                <b-form-select
-                    id="state"
-                    v-model="state"
-                    :options="statesOptions"
-                    required
+          <b-card>
+            <b-row no-gutters>
+              <b-col class="px-3 my-2">
+                <b-form-group
+                    id="input-group-1"
+                    label="Nombre completo:"
+                    label-for="fullName"
                 >
-                  <template #first>
-                    <b-form-select-option :value="null" disabled>Seleccione el estado en el que vive
-                    </b-form-select-option>
-                  </template>
-                </b-form-select>
-              </b-form-group>
-            </b-col>
-            <b-col cols="12" md="6" class="px-3 my-2">
-              <b-form-group
-                  id="input-group-4"
-                  label="Ciudad:"
-                  label-for="city"
-              >
-                <b-form-input
-                    id="city"
-                    type="text"
-                    required
-                    v-model="city"
-                    trim
-                    placeholder="Ingrese su ciudad"
-                    maxlength="50"
-                    minlength="2"
-                ></b-form-input>
-              </b-form-group>
-            </b-col>
-          </b-row>
-          <b-row no-gutters>
-            <b-col cols="12" md="6" class="px-3 my-2">
-              <b-form-group
-                  id="input-group-5"
-                  label="Sexo de nacimiento:"
-                  label-for="gender"
-              >
-                <b-form-radio-group
-                    id="radio-group-1"
-                    v-model="sex"
-                    :options="gendersOptions"
-                    required
-                >
-                </b-form-radio-group>
-              </b-form-group>
-            </b-col>
-            <b-col cols="12" md="6" class="px-3 my-2">
-              <b-form-group
-                  id="input-group-6"
-                  label="¿Practica ejercicio?"
-                  label-for="exercise"
-              >
-                <b-form-radio-group
-                    id="radio-group-2"
-                    v-model="exercise"
-                    :options="[{text: 'Sí', value: 'Sí'}, {text: 'No', value: 'No'}]"
-                    required
-                >
-                </b-form-radio-group>
-              </b-form-group>
-            </b-col>
-          </b-row>
-          <b-row no-gutters>
-            <b-col cols="12">
-              <b-form-group
-                  id="input-group-7"
-                  label="Fecha de nacimiento:"
-                  label-class="px-3"
-                  label-for="birthDate"
-              >
-                <b-row no-gutters>
-                  <b-col cols="12" md="4" class="px-3 py-1">
-                    <b-form-select
-                        id="birthYear"
-                        v-model="birthYear"
-                        :options="yearOptions"
-                        required
-                        @change="daysInMonth(birthMonth, birthYear)"
-                    >
-                      <template #first>
-                        <b-form-select-option :value="null" disabled>Año
-                        </b-form-select-option>
-                      </template>
-                    </b-form-select>
-                  </b-col>
-                  <b-col cols="12" md="4" class="px-3 py-1">
-                    <b-form-select
-                        id="birthMonth"
-                        v-model="birthMonth"
-                        :options="monthOptions"
-                        required
-                        @change="daysInMonth(birthMonth, birthYear)"
-                    >
-                      <template #first>
-                        <b-form-select-option :value="null" disabled>Mes
-                        </b-form-select-option>
-                      </template>
-                    </b-form-select>
-                  </b-col>
-                  <b-col cols="12" md="4" class="px-3 py-1">
-                    <b-form-select
-                        id="birthDay"
-                        v-model="birthDay"
-                        :options="dayOptions"
-                        required
-                        :disabled="!birthMonth || !birthYear"
-                    >
-                      <template #first>
-                        <b-form-select-option :value="null" disabled>Día
-                        </b-form-select-option>
-                      </template>
-                    </b-form-select>
-                  </b-col>
-                </b-row>
-              </b-form-group>
-            </b-col>
-          </b-row>
-          <b-row no-gutters>
-            <b-col cols="12" md="6" class="px-3 my-2">
-              <b-form-group
-                  id="input-group-8"
-                  label="Ingrese su número de WhatsApp:"
-                  label-for="phoneNumber"
-              >
-                <b-input-group>
-                  <b-input-group-prepend is-text>
-                    <b-icon icon="whatsapp" class="text-primary"></b-icon>
-                  </b-input-group-prepend>
                   <b-form-input
-                      id="phoneNumber"
-                      type="tel"
+                      id="fullName"
+                      v-model="fullName"
+                      type="text"
                       required
-                      v-model="phoneNumber"
                       trim
-                      placeholder="Ingrese su número de teléfono"
-                      autocomplete="off"
-                      maxlength="10"
-                      :formatter="formatPhoneNumber"
+                      placeholder="Ingrese su nombre"
+                      maxlength="50"
+                      minlength="3"
                   ></b-form-input>
-                </b-input-group>
-              </b-form-group>
-            </b-col>
-          </b-row>
+                </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row no-gutters>
+              <b-col class="px-3 my-2">
+                <b-form-group
+                    id="input-group-2"
+                    label="Ocupación:"
+                    label-for="occupation"
+                >
+                  <b-form-input
+                      id="occupation"
+                      v-model="occupation"
+                      type="text"
+                      required
+                      trim
+                      placeholder="Ingrese su ocupación"
+                      maxlength="50"
+                      minlength="3"
+                  ></b-form-input>
+                </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row no-gutters>
+              <b-col cols="12" md="6" class="px-3 my-2">
+                <b-form-group
+                    id="input-group-3"
+                    label="Estado:"
+                    label-for="state"
+                >
+                  <b-form-select
+                      id="state"
+                      v-model="state"
+                      :options="statesOptions"
+                      required
+                  >
+                    <template #first>
+                      <b-form-select-option :value="null" disabled>Seleccione el estado en el que vive
+                      </b-form-select-option>
+                    </template>
+                  </b-form-select>
+                </b-form-group>
+              </b-col>
+              <b-col cols="12" md="6" class="px-3 my-2">
+                <b-form-group
+                    id="input-group-4"
+                    label="Ciudad:"
+                    label-for="city"
+                >
+                  <b-form-input
+                      id="city"
+                      type="text"
+                      required
+                      v-model="city"
+                      trim
+                      placeholder="Ingrese su ciudad"
+                      maxlength="50"
+                      minlength="2"
+                  ></b-form-input>
+                </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row no-gutters>
+              <b-col cols="12" md="6" class="px-3 my-2">
+                <b-form-group
+                    id="input-group-5"
+                    label="Sexo de nacimiento:"
+                    label-for="gender"
+                >
+                  <b-form-radio-group
+                      id="radio-group-1"
+                      v-model="sex"
+                      :options="gendersOptions"
+                      required
+                  >
+                  </b-form-radio-group>
+                </b-form-group>
+              </b-col>
+              <b-col cols="12" md="6" class="px-3 my-2">
+                <b-form-group
+                    id="input-group-6"
+                    label="¿Practica ejercicio?"
+                    label-for="exercise"
+                >
+                  <b-form-radio-group
+                      id="radio-group-2"
+                      v-model="exercise"
+                      :options="[{text: 'Sí', value: 'Sí'}, {text: 'No', value: 'No'}]"
+                      required
+                  >
+                  </b-form-radio-group>
+                </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row no-gutters>
+              <b-col cols="12">
+                <b-form-group
+                    id="input-group-7"
+                    label="Fecha de nacimiento:"
+                    label-class="px-3"
+                    label-for="birthDate"
+                >
+                  <b-row no-gutters>
+                    <b-col cols="12" md="4" class="px-3 py-1">
+                      <b-form-select
+                          id="birthYear"
+                          v-model="birthYear"
+                          :options="yearOptions"
+                          required
+                          @change="daysInMonth(birthMonth, birthYear)"
+                      >
+                        <template #first>
+                          <b-form-select-option :value="null" disabled>Año
+                          </b-form-select-option>
+                        </template>
+                      </b-form-select>
+                    </b-col>
+                    <b-col cols="12" md="4" class="px-3 py-1">
+                      <b-form-select
+                          id="birthMonth"
+                          v-model="birthMonth"
+                          :options="monthOptions"
+                          required
+                          @change="daysInMonth(birthMonth, birthYear)"
+                      >
+                        <template #first>
+                          <b-form-select-option :value="null" disabled>Mes
+                          </b-form-select-option>
+                        </template>
+                      </b-form-select>
+                    </b-col>
+                    <b-col cols="12" md="4" class="px-3 py-1">
+                      <b-form-select
+                          id="birthDay"
+                          v-model="birthDay"
+                          :options="dayOptions"
+                          required
+                          :disabled="!birthMonth || !birthYear"
+                      >
+                        <template #first>
+                          <b-form-select-option :value="null" disabled>Día
+                          </b-form-select-option>
+                        </template>
+                      </b-form-select>
+                    </b-col>
+                  </b-row>
+                </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row no-gutters>
+              <b-col cols="12" md="6" class="px-3 my-2">
+                <b-form-group
+                    id="input-group-8"
+                    label="Ingrese su número de WhatsApp:"
+                    label-for="phoneNumber"
+                >
+                  <b-input-group>
+                    <b-input-group-prepend is-text>
+                      <b-icon icon="whatsapp" class="text-primary"></b-icon>
+                    </b-input-group-prepend>
+                    <b-form-input
+                        id="phoneNumber"
+                        type="tel"
+                        required
+                        v-model="phoneNumber"
+                        trim
+                        placeholder="Ingrese su número de teléfono"
+                        autocomplete="off"
+                        maxlength="10"
+                        :formatter="formatPhoneNumber"
+                    ></b-form-input>
+                  </b-input-group>
+                </b-form-group>
+              </b-col>
+            </b-row>
+          </b-card>
 
           <hr class="bg-primary"/>
 
           <!-- Anthropometric data -->
-          <b-row no-gutters>
-            <b-col cols="12" md="4" class="px-3 my-2">
-              <b-form-group
-                  id="input-group-8"
-                  label="Estatura actual en centímetros (sin zapatos, con los talones pegados a la pared y viendo al frente):"
-                  label-for="height"
-                  invalid-feedback="Por favor, ingrese su estatura en centímetros."
-              >
-                <b-input-group
-                    append="cm"
+          <b-card>
+            <b-row no-gutters>
+              <b-col cols="12" md="4" class="px-3 my-2">
+                <b-form-group
+                    id="input-group-8"
+                    label="Estatura actual en centímetros (sin zapatos, con los talones pegados a la pared y viendo al frente):"
+                    label-for="height"
+                    invalid-feedback="Por favor, ingrese su estatura en centímetros."
                 >
-                  <b-form-input
-                      id="height"
-                      type="number"
-                      required
-                      v-model.number="height"
-                      trim
-                      placeholder="Ejemplo: 178"
-                      autocomplete="off"
-                      min="0"
-                  ></b-form-input>
-                </b-input-group>
-              </b-form-group>
-            </b-col>
-            <b-col cols="12" md="4" class="px-3 my-2">
-              <b-form-group
-                  id="input-group-9"
-                  label="Circunferencia exacta de la muñeca derecha con centímetros y milímetros (utilice una cinta métrica sin apretar la muñeca):"
-                  label-for="wristCircumference"
-              >
-                <b-input-group
-                    append="cm"
+                  <b-input-group
+                      append="cm"
+                  >
+                    <b-form-input
+                        id="height"
+                        type="number"
+                        required
+                        v-model.number="height"
+                        trim
+                        placeholder="Ejemplo: 178"
+                        autocomplete="off"
+                        min="0"
+                    ></b-form-input>
+                  </b-input-group>
+                </b-form-group>
+              </b-col>
+              <b-col cols="12" md="4" class="px-3 my-2">
+                <b-form-group
+                    id="input-group-9"
+                    label="Circunferencia exacta de la muñeca derecha con centímetros y milímetros (utilice una cinta métrica sin apretar la muñeca):"
+                    label-for="wristCircumference"
                 >
-                  <b-form-input
-                      id="wristCircumference"
-                      type="number"
-                      required
-                      v-model.number="wristCircumference"
-                      trim
-                      placeholder="Ejemplo: 17.2"
-                      autocomplete="off"
-                      min="0"
-                      step="0.1"
-                  ></b-form-input>
-                </b-input-group>
-              </b-form-group>
-            </b-col>
-            <b-col cols="12" md="4" class="px-3 my-2">
-              <b-form-group
-                  id="input-group-10"
-                  label="Circunferencia exacta de la cintura con centímetros y milímetros (utilice una cinta métrica a nivel del ombligo sin oprimir la piel):"
-                  label-for="waistCircumference"
-              >
-                <b-input-group
-                    append="cm"
+                  <b-input-group
+                      append="cm"
+                  >
+                    <b-form-input
+                        id="wristCircumference"
+                        type="number"
+                        required
+                        v-model.number="wristCircumference"
+                        trim
+                        placeholder="Ejemplo: 17.2"
+                        autocomplete="off"
+                        min="0"
+                        step="0.1"
+                    ></b-form-input>
+                  </b-input-group>
+                </b-form-group>
+              </b-col>
+              <b-col cols="12" md="4" class="px-3 my-2">
+                <b-form-group
+                    id="input-group-10"
+                    label="Circunferencia exacta de la cintura con centímetros y milímetros (utilice una cinta métrica a nivel del ombligo sin oprimir la piel):"
+                    label-for="waistCircumference"
                 >
-                  <b-form-input
-                      id="waistCircumference"
-                      type="number"
-                      required
-                      v-model.number="waistCircumference"
-                      trim
-                      placeholder="Ejemplo: 102.6"
-                      autocomplete="off"
-                      min="0"
-                      step="0.1"
-                  ></b-form-input>
-                </b-input-group>
-              </b-form-group>
-            </b-col>
-          </b-row>
-          <b-row no-gutters>
-            <b-col cols="12" md="6" class="px-3 my-2">
-              <b-form-group
-                  id="input-group-11"
-                  label="Peso corporal exacto actual con kilogramos y gramos (pésese en ayunas, sin zapatos, y envíe la fotografía de su peso sobre la báscula digital):"
-                  label-for="weight"
-              >
-                <b-input-group
-                    append="kg"
+                  <b-input-group
+                      append="cm"
+                  >
+                    <b-form-input
+                        id="waistCircumference"
+                        type="number"
+                        required
+                        v-model.number="waistCircumference"
+                        trim
+                        placeholder="Ejemplo: 102.6"
+                        autocomplete="off"
+                        min="0"
+                        step="0.1"
+                    ></b-form-input>
+                  </b-input-group>
+                </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row no-gutters>
+              <b-col cols="12" md="6" class="px-3 my-2">
+                <b-form-group
+                    id="input-group-11"
+                    label="Peso corporal exacto actual con kilogramos y gramos (pésese en ayunas, sin zapatos, y envíe la fotografía de su peso sobre la báscula digital):"
+                    label-for="weight"
                 >
-                  <b-form-input
-                      id="weight"
-                      type="number"
-                      required
-                      v-model.number="weight"
-                      trim
-                      placeholder="Ejemplo: 95.7"
-                      autocomplete="off"
-                      min="0"
-                      step="0.1"
-                  ></b-form-input>
-                </b-input-group>
-              </b-form-group>
-            </b-col>
-            <b-col cols="12" md="6" class="px-3 my-2">
-              <b-form-group
-                  id="input-group-12"
-                  label="Peso corporal deseado en kilogramos (díganos cuál es el peso con el que se sentiría feliz):"
-                  label-for="desiredWeight"
-              >
-                <b-input-group
-                    append="kg"
+                  <b-input-group
+                      append="kg"
+                  >
+                    <b-form-input
+                        id="weight"
+                        type="number"
+                        required
+                        v-model.number="weight"
+                        trim
+                        placeholder="Ejemplo: 95.7"
+                        autocomplete="off"
+                        min="0"
+                        step="0.1"
+                    ></b-form-input>
+                  </b-input-group>
+                </b-form-group>
+              </b-col>
+              <b-col cols="12" md="6" class="px-3 my-2">
+                <b-form-group
+                    id="input-group-12"
+                    label="Peso corporal deseado en kilogramos (díganos cuál es el peso con el que se sentiría feliz):"
+                    label-for="desiredWeight"
                 >
-                  <b-form-input
-                      id="desiredWeight"
-                      type="number"
-                      required
-                      trim
-                      v-model.number="desiredWeight"
-                      placeholder="Ejemplo: 75.5"
-                      autocomplete="off"
-                      min="0"
-                      step="0.1"
-                  ></b-form-input>
-                </b-input-group>
-              </b-form-group>
-            </b-col>
-          </b-row>
+                  <b-input-group
+                      append="kg"
+                  >
+                    <b-form-input
+                        id="desiredWeight"
+                        type="number"
+                        required
+                        trim
+                        v-model.number="desiredWeight"
+                        placeholder="Ejemplo: 75.5"
+                        autocomplete="off"
+                        min="0"
+                        step="0.1"
+                    ></b-form-input>
+                  </b-input-group>
+                </b-form-group>
+              </b-col>
+            </b-row>
+          </b-card>
 
           <hr class="bg-primary"/>
 
           <!-- Meal preferences and other data -->
-          <b-row no-gutters>
-            <b-col class="px-3 my-2">
-              <b-form-group
-                  id="input-group-13"
-                  label="Arrastre y ordene en qué momento del día prefiere comer más, siendo 1 el principal momento de alimentación:"
-                  label-for="mealPreferences"
-              >
-                <draggable v-model="mealPreferences" :options="{ animation: 300 }">
-                  <transition-group tag="div" name="list">
-                    <b-list-group-item
-                        v-for="(meal, index) in mealPreferences"
-                        :key="meal"
-                        class="d-flex justify-content-between align-items-center rounded border-primary"
-                    >
-                      {{ index + 1 }}. {{ meal }}
-                      <b-icon icon="arrows-move" class="ml-3"></b-icon>
-                    </b-list-group-item>
-                  </transition-group>
-                </draggable>
-              </b-form-group>
-            </b-col>
-          </b-row>
-          <b-row no-gutters>
-            <b-col cols="12" md="6" class="px-3 my-2">
-              <b-form-group
-                  id="input-group-14"
-                  label="Indique en qué momento del día desea comer un snack para satisfacer su antojo o apetito entre comidas:"
-                  label-for="snackPreferences"
-              >
-                <b-form-checkbox-group
-                    id="snackPreferences"
-                    v-model="snackPreferences"
-                    :options="snackTimeOptions"
+          <b-card>
+            <b-row no-gutters>
+              <b-col class="px-3 my-2">
+                <b-form-group
+                    id="input-group-13"
+                    label="Arrastre y ordene en qué momento del día prefiere comer más, siendo 1 el principal momento de alimentación:"
+                    label-for="mealPreferences"
                 >
-                </b-form-checkbox-group>
-              </b-form-group>
-            </b-col>
-            <b-col cols="12" md="6" class="px-3 my-2">
-              <b-form-group
-                  id="input-group-15"
-                  label="Cuéntenos cuáles son sus bebidas acostumbradas o preferidas durante el día:"
-                  label-for="beverages"
-              >
-                <b-form-textarea
-                    id="beverages"
-                    v-model="beverages"
-                    required
-                    trim
-                    no-resize
-                    rows="3"
-                    placeholder="Ejemplo: agua de frutas, leche, refresco, jugo, cerveza, etc."
-                    maxlength="100"
-                    minlength="2"
-                ></b-form-textarea>
-              </b-form-group>
-            </b-col>
-          </b-row>
-          <b-row no-gutters>
-            <b-col class="px-3 my-2">
-              <b-form-group
-                  id="input-group-16"
-                  label="Finalmente, relate si presenta alguna enfermedad, padecimiento, o dolor físico y cuál es:"
-                  label-for="diseases"
-              >
-                <b-form-textarea
-                    id="diseases"
-                    v-model="diseases"
-                    trim
-                    no-resize
-                    rows="3"
-                    placeholder="Ejemplo: diabetes, hipertensión, colesterol alto, dolor de cabeza, etc."
-                    maxlength="100"
-                ></b-form-textarea>
-              </b-form-group>
-            </b-col>
-          </b-row>
-          <b-row no-gutters>
-            <b-col class="px-3 my-2">
-              <b-form-group
-                  id="input-group-17"
-                  label="¿Toma algún medicamento o suplemento alimenticio? Si es así, mencione cuál y para qué:"
-                  label-for="medicines"
-              >
-                <b-form-textarea
-                    id="medicines"
-                    v-model="medicines"
-                    trim
-                    no-resize
-                    rows="3"
-                    placeholder="Ejemplo: metformina, complejo B, vitamina C, etc."
-                    maxlength="100"
-                ></b-form-textarea>
-              </b-form-group>
-            </b-col>
-          </b-row>
+                  <draggable v-model="mealPreferences" :options="{ animation: 300 }">
+                    <transition-group tag="div" name="list">
+                      <b-list-group-item
+                          v-for="(meal, index) in mealPreferences"
+                          :key="meal"
+                          class="d-flex justify-content-between align-items-center rounded border-primary"
+                      >
+                        {{ index + 1 }}. {{ meal }}
+                        <b-icon icon="arrows-move" class="ml-3"></b-icon>
+                      </b-list-group-item>
+                    </transition-group>
+                  </draggable>
+                </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row no-gutters>
+              <b-col cols="12" md="6" class="px-3 my-2">
+                <b-form-group
+                    id="input-group-14"
+                    label="Indique en qué momento del día desea comer un snack para satisfacer su antojo o apetito entre comidas:"
+                    label-for="snackPreferences"
+                >
+                  <b-form-checkbox-group
+                      id="snackPreferences"
+                      v-model="snackPreferences"
+                      :options="snackTimeOptions"
+                  >
+                  </b-form-checkbox-group>
+                </b-form-group>
+              </b-col>
+              <b-col cols="12" md="6" class="px-3 my-2">
+                <b-form-group
+                    id="input-group-15"
+                    label="Cuéntenos cuáles son sus bebidas acostumbradas o preferidas durante el día:"
+                    label-for="beverages"
+                >
+                  <b-form-textarea
+                      id="beverages"
+                      v-model="beverages"
+                      required
+                      trim
+                      no-resize
+                      rows="3"
+                      placeholder="Ejemplo: agua de frutas, leche, refresco, jugo, cerveza, etc."
+                      maxlength="100"
+                      minlength="2"
+                  ></b-form-textarea>
+                </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row no-gutters>
+              <b-col class="px-3 my-2">
+                <b-form-group
+                    id="input-group-16"
+                    label="Finalmente, relate si presenta alguna enfermedad, padecimiento, o dolor físico y cuál es:"
+                    label-for="diseases"
+                >
+                  <b-form-textarea
+                      id="diseases"
+                      v-model="diseases"
+                      trim
+                      no-resize
+                      rows="3"
+                      placeholder="Ejemplo: diabetes, hipertensión, colesterol alto, dolor de cabeza, etc."
+                      maxlength="100"
+                  ></b-form-textarea>
+                </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row no-gutters>
+              <b-col class="px-3 my-2">
+                <b-form-group
+                    id="input-group-17"
+                    label="¿Toma algún medicamento o suplemento alimenticio? Si es así, mencione cuál y para qué:"
+                    label-for="medicines"
+                >
+                  <b-form-textarea
+                      id="medicines"
+                      v-model="medicines"
+                      trim
+                      no-resize
+                      rows="3"
+                      placeholder="Ejemplo: metformina, complejo B, vitamina C, etc."
+                      maxlength="100"
+                  ></b-form-textarea>
+                </b-form-group>
+              </b-col>
+            </b-row>
+          </b-card>
 
           <hr class="bg-primary"/>
 
           <!-- Submit button -->
-          <b-row no-gutters>
-            <b-col cols="12" class="px-3 my-2">
-              <p class="text-justify">
-                <b-icon icon="exclamation-triangle" class="text-warning"></b-icon>
-                <small>
-                  <b> Aviso:</b> Al terminar de rellenar el formulario, presione el botón <i>"Descargar formulario"</i>
-                  para obtener un archivo PDF con la información proporcionada. Posteriormente, envíe el archivo a su
-                  dietista vía WhatsApp.
-                </small>
-              </p>
-            </b-col>
-            <b-col cols="12" class="px-3">
-              <b-button block type="submit" variant="primary">Descargar formulario</b-button>
-            </b-col>
-          </b-row>
+          <b-card>
+            <b-row no-gutters>
+              <b-col cols="12" class="px-3 my-2">
+                <p class="text-justify">
+                  <b-icon icon="exclamation-triangle" class="text-warning"></b-icon>
+                  <small>
+                    <b> Aviso:</b> Al terminar de rellenar el formulario, presione el botón <i>"Descargar
+                    formulario"</i>
+                    para obtener un archivo PDF con la información proporcionada. Posteriormente, envíe el archivo a su
+                    dietista vía WhatsApp.
+                  </small>
+                </p>
+              </b-col>
+              <b-col cols="12" class="px-3">
+                <b-button block type="submit" variant="primary">Descargar formulario</b-button>
+              </b-col>
+            </b-row>
+          </b-card>
 
           <hr class="bg-primary"/>
 
@@ -658,7 +667,7 @@ export default Vue.extend({
       // Anthropometric data
       doc.setFontSize(16);
       doc.setTextColor("#ff6600");
-      doc.text("Datos antropométricos", 10, 110);
+      doc.text("Datos físicos", 10, 110);
       doc.setFontSize(12);
       doc.setTextColor("#000000")
       doc.text(`Estatura: ${this.height} cm`, 10, 120);
@@ -712,5 +721,13 @@ export default Vue.extend({
 <style scoped>
 .list-group-item {
   cursor: grab;
+}
+
+.card {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+}
+
+.card-body {
+  padding: 1rem 0 1rem 0;
 }
 </style>
