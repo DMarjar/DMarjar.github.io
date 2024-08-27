@@ -179,7 +179,7 @@
                           v-model="birthDay"
                           :options="dayOptions"
                           required
-                          :disabled="!birthMonth || !birthYear"
+                          :disabled="birthMonth === null || !birthYear"
                       >
                         <template #first>
                           <b-form-select-option :value="null" disabled>Día
@@ -409,7 +409,7 @@
               <b-col class="px-3 my-2">
                 <b-form-group
                     id="input-group-16"
-                    label="Finalmente, relate si presenta alguna enfermedad, padecimiento, o dolor físico y cuál es:"
+                    label="Relate si presenta alguna enfermedad, padecimiento, o dolor físico y cuál es:"
                     label-for="diseases"
                 >
                   <b-form-textarea
@@ -428,7 +428,7 @@
               <b-col class="px-3 my-2">
                 <b-form-group
                     id="input-group-17"
-                    label="¿Toma algún medicamento o suplemento alimenticio? Si es así, mencione cuál y para qué:"
+                    label="Finalmente, ¿Toma algún medicamento o suplemento alimenticio? Si es así, mencione cuál y para qué:"
                     label-for="medicines"
                 >
                   <b-form-textarea
@@ -683,7 +683,7 @@ export default Vue.extend({
       doc.setFontSize(12);
       doc.setTextColor("#000000")
       doc.text(`Momentos de comida (mayor a menor): ${this.mealPreferences.join(", ")}`, 10, 180);
-      doc.text(`Snacks: ${this.snackPreferences ? this.snackPreferences.join(", ") : "N/A"}`, 10, 190);
+      doc.text(`Snacks: ${this.snackPreferences.length > 0 ? this.snackPreferences.join(", ") : "N/A"}`, 10, 190);
       doc.text(`Bebidas: ${this.beverages}`, 10, 200);
       doc.text(`Enfermedades: ${this.diseases ? this.diseases : "N/A"}`, 10, 210);
       doc.text(`Medicamentos: ${this.medicines ? this.medicines : "N/A"}`, 10, 220);
