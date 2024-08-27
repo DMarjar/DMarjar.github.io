@@ -417,7 +417,7 @@
                       no-resize
                       rows="3"
                       placeholder="Ejemplo: agua de frutas, leche, refresco, jugo, cerveza, etc."
-                      maxlength="100"
+                      maxlength="85"
                       minlength="2"
                   ></b-form-textarea>
                 </b-form-group>
@@ -437,7 +437,7 @@
                       no-resize
                       rows="3"
                       placeholder="Ejemplo: diabetes, hipertensión, colesterol alto, dolor de cabeza, etc."
-                      maxlength="100"
+                      maxlength="85"
                   ></b-form-textarea>
                 </b-form-group>
               </b-col>
@@ -456,7 +456,7 @@
                       no-resize
                       rows="3"
                       placeholder="Ejemplo: metformina, complejo B, vitamina C, etc."
-                      maxlength="100"
+                      maxlength="85"
                   ></b-form-textarea>
                 </b-form-group>
               </b-col>
