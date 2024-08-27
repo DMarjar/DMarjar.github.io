@@ -103,6 +103,24 @@
                   ></b-form-input>
                 </b-form-group>
               </b-col>
+              <b-col v-if="state === 'other'" cols="12" md="6" class="px-3 my-2">
+                <b-form-group
+                    id="input-group-99"
+                    label="Escriba el país y estado/provincia de donde proviene:"
+                    label-for="otherState"
+                >
+                  <b-form-input
+                      id="otherState"
+                      type="text"
+                      required
+                      v-model="otherState"
+                      trim
+                      placeholder="Ejemplo: Estados Unidos, California"
+                      maxlength="50"
+                      minlength="2"
+                  ></b-form-input>
+                </b-form-group>
+              </b-col>
             </b-row>
             <b-row no-gutters>
               <b-col cols="12" md="6" class="px-3 my-2">
@@ -506,6 +524,7 @@ export default Vue.extend({
       occupation: "" as string,
       state: null as string | null,
       city: "" as string,
+      otherState: "" as string,
       sex: "" as string,
       exercise: "" as string,
       birthYear: null as string | null,
@@ -573,6 +592,7 @@ export default Vue.extend({
         {value: "Veracruz", text: "Veracruz"},
         {value: "Yucatán", text: "Yucatán"},
         {value: "Zacatecas", text: "Zacatecas"},
+        {value: "other", text: "Otro / Extranjero"},
       ] as { value: string; text: string }[],
       gendersOptions: [
         {value: "Masculino", text: "Masculino"},
@@ -657,7 +677,7 @@ export default Vue.extend({
       doc.setTextColor("#000000")
       doc.text(`Nombre completo: ${this.fullName}`, 10, 30);
       doc.text(`Ocupación: ${this.occupation}`, 10, 40);
-      doc.text(`Estado: ${this.state}`, 10, 50);
+      doc.text(`Estado: ${this.state === "other" ? this.otherState : this.state}`, 10, 50);
       doc.text(`Ciudad: ${this.city}`, 10, 60);
       doc.text(`Sexo de nacimiento: ${this.sex}`, 10, 70);
       doc.text(`¿Practica ejercicio?: ${this.exercise}`, 10, 80);
